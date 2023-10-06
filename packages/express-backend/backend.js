@@ -36,6 +36,16 @@ app.post("/users", (req, res) => {
   res.send();
 });
 
+app.delete("/users/:id", (req, res) => {
+  const id = req.params["id"];
+  let result = deleteUserById(id);
+  if (result === undefined) {
+    res.status(404).send("Resource not found.");
+  } else {
+    res.send(result);
+  }
+});
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
@@ -50,6 +60,12 @@ const findUserById = (id) =>
 const addUser = (user) => {
   users["users_list"].push(user);
   return user;
+};
+
+const deleteUserById = (id) => {
+  let del_user = findUserById(id);
+  users["users_list"] = users["users_list"].filter((user) => user["id"] !== id);
+  return del_user;
 };
 
 const users = {
