@@ -23,6 +23,10 @@ function MyApp() {
 
   function updateList(person) {
     postUser(person)
+      .then((res) => {
+        if (res.status !== 201)
+          throw new Error(`POST failed, status code ${res.status}`);
+      })
       .then(() => setCharacters([...characters, person]))
       .catch((error) => {
         console.log(error);
