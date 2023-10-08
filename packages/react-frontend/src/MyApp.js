@@ -15,10 +15,20 @@ function MyApp() {
   }, []);
 
   function removeOneCharacter(index) {
-    const updated = characters.filter((character, i) => {
-      return i !== index;
-    });
-    setCharacters(updated);
+    deleteUserbyId(characters[index].id)
+      .then((res) => {
+        if (res.status !== 204)
+          throw new Error(`DELETE failed, status code ${res.status}`);
+      })
+      .then(() => {
+        const updated = characters.filter((character, i) => {
+          return i !== index;
+        });
+        setCharacters(updated);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   function updateList(person) {
@@ -46,6 +56,14 @@ function MyApp() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(person),
+    });
+
+    return promise;
+  }
+
+  function deleteUserbyId(id) {
+    const promise = fetch(`http://localhost:8000/users/${id}`, {
+      method: "DELETE",
     });
 
     return promise;
