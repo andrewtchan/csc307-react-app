@@ -40,6 +40,7 @@ app.get("/users/:id", (req, res) => {
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
+  userToAdd.id = Math.random();
   addUser(userToAdd);
   res.status(201).send();
 });
