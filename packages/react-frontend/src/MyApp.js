@@ -26,8 +26,9 @@ function MyApp() {
       .then((res) => {
         if (res.status !== 201)
           throw new Error(`POST failed, status code ${res.status}`);
+        return res.json();
       })
-      .then(() => setCharacters([...characters, person]))
+      .then((json) => setCharacters([...characters, json]))
       .catch((error) => {
         console.log(error);
       });
